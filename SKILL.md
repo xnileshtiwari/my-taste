@@ -25,8 +25,14 @@ Base directory: `/home/nilesh/.claude/skills/my-taste/`
 ## What this is
 
 Nilesh's preferences, learned from what he actually does rather than from what he took the time to
-write down. A preference is observed, counted, and only becomes a rule once it has held up three
-separate times.
+write down. A preference is observed, counted, and only becomes a rule once it has held up enough
+times for its domain:
+
+| Domain | Graduation threshold |
+|---|---|
+| `writing/` | 1 vote |
+| `visuals/` | 2 votes |
+| `behavior/` | 3 votes |
 
 This file holds the rules of the system. It holds no preferences. Preferences live in the data
 files and change constantly; this file should not.
@@ -162,10 +168,11 @@ In order. Each step is one pass, no revisiting.
      votes the same entry twice.
    - Apply last: a correction to output tagged `[taste: id]` is **−1** on that entry, and
      overrides any upvote it earned in the same run.
-6. **Transitions.**
-   - Candidate reaches 3 → move it into its domain file.
-   - Domain entry drops to 1 → move it back to `candidates.md` with a one-line note of what
-     demoted it.
+6. **Transitions.** Threshold is per-domain (see table in "What this is": writing 1, visuals 2,
+   behavior 3).
+   - Candidate reaches its domain's threshold → move it into its domain file.
+   - Graduated entry drops below its domain's threshold → move it back to `candidates.md` with a
+     one-line note of what demoted it.
    - An entry at 0 or below stays in `candidates.md` with its note, and never applies.
 7. **Contradiction** between a new extraction and a graduated entry → stop and ask him which wins.
    Do not guess, do not record both.
